@@ -27,7 +27,7 @@ const Hero = () => {
       )}
       <div className=" text-xs flex flex-col gap-5 px-10 py-5 text-justify font-semibold text-gray-700">
         <div>
-          At the heart of our platform lies the ingenious use of
+          At the heart of the platform lies the ingenious use of
           <b> JWT (JSON Web Tokens)</b>, which ensures secure and reliable
           authentication. Unlike traditional token storage methods, we have
           implemented an <b>HTTP-Only cookie strategy</b> to securely store
