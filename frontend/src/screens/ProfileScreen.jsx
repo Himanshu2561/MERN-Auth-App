@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useUpdateMutation } from "../slices/usersApiSlice";
-import { setCredentials } from "../slices/authSlice";
+import { useDeleteMutation, useUpdateMutation } from "../slices/usersApiSlice";
+import { logout, setCredentials } from "../slices/authSlice";
 import Loader from "../components/Loader";
 import { toast } from "react-toastify";
 
@@ -15,7 +15,10 @@ const ProfileScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [updateProfileApiCall, { isLoading }] = useUpdateMutation();
+  const [updateProfileApiCall, { isLoading: loadingUpdate }] =
+    useUpdateMutation();
+  const [deleteProfileApiCall, { isLoading: deleteUpdate }] =
+    useDeleteMutation();
 
   // Getting data using useSelector from auth state.
   const { userInfo } = useSelector((state) => state.auth);
@@ -23,13 +26,19 @@ const ProfileScreen = () => {
   useEffect(() => {
     setName(userInfo.name);
     setEmail(userInfo.email);
-  }, [userInfo.setName, userInfo.setEmail]);
+  }, [userInfo.name, userInfo.email]);
 
   const updateProfileHandler = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPass) {
       toast.error("Passwords do not match");
+    } else if (
+      name == userInfo.name &&
+      email == userInfo.email &&
+      password === ""
+    ) {
+      toast.error("Please update atleast one field");
     } else {
       try {
         const res = await updateProfileApiCall({
@@ -49,6 +58,20 @@ const ProfileScreen = () => {
           toast.error(err?.data?.message || err.error);
         }
       }
+    }
+  };
+
+  const deleteUserProfile = async () => {
+    try {
+      window.alert("Are you sure you want to delete your profile?");
+
+      const res = await deleteProfileApiCall().unwrap();
+      dispatch(logout());
+
+      navigate("/");
+      toast.success(res.message);
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
     }
   };
 
@@ -127,7 +150,7 @@ const ProfileScreen = () => {
                 autoComplete="false"
               />
             </div>
-            {isLoading && <Loader />}
+            {loadingUpdate && <Loader />}
             <button
               type="submit"
               className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-cente"
@@ -135,6 +158,13 @@ const ProfileScreen = () => {
               Update
             </button>
           </form>
+          {deleteUpdate && <Loader />}
+          <button
+            onClick={deleteUserProfile}
+            className="w-full uppercase text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-cente"
+          >
+            Delete profile
+          </button>
         </div>
       </div>
     </div>

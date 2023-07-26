@@ -12,8 +12,8 @@ const Hero = () => {
         It also uses Redux Toolkit and the Tailwind CSS library
       </div>
       {userInfo ? (
-        <div className="flex items-center justify-center text-black uppercase font-semibold">
-          You are logged in
+        <div className="flex items-center justify-center text-black capitalize font-semibold">
+          You are succesfully logged in {userInfo.name}
         </div>
       ) : (
         <div className="flex items-center gap-4 text-white font-semibold">

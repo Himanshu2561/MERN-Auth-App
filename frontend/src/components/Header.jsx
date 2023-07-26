@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../slices/usersApiSlice";
 import { logout } from "../slices/authSlice";
+import { toast } from "react-toastify";
 
 const Header = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -18,6 +19,7 @@ const Header = () => {
       await logoutApiCall().unwrap();
       dispatch(logout());
       navigate("/");
+      toast.warn("You have been logged out");
     } catch (err) {
       console.log(err);
     }

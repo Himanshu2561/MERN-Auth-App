@@ -35,6 +35,7 @@ const LoginForm = () => {
       dispatch(setCredentials({ ...res }));
 
       navigate("/");
+      toast.success("Signin successful");
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
@@ -52,7 +53,7 @@ const LoginForm = () => {
               htmlFor="email"
               className="block mb-2 text-sm font-medium text-gray-900"
             >
-              Your email
+              <span className="text-red-500">*</span> Your email
             </label>
             <input
               onChange={(e) => {
@@ -72,7 +73,7 @@ const LoginForm = () => {
               htmlFor="password"
               className="block mb-2 text-sm font-medium text-gray-900"
             >
-              Password
+              <span className="text-red-500">*</span> Password
             </label>
             <input
               onChange={(e) => {

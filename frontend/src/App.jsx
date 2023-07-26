@@ -13,7 +13,7 @@ function App() {
   return (
     <>
       <Header />
-      <ToastContainer />
+      <ToastContainer className="mt-20" />
       <Routes>
         <Route index={true} path="/" element={<HomeScreen />} />
         <Route path="/login" element={<LoginScreen />} />
